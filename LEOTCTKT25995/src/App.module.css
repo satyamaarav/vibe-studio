@@ -1,0 +1,50 @@
+.game {
+  font-family: system-ui, sans-serif;
+  text-align: center;
+  padding: 1rem;
+}
+
+.turnIndicator {
+  margin-bottom: 0.5rem;
+  font-size: 1.25rem;
+}
+
+.board {
+  display: grid;
+  grid-template-columns: repeat(3, 80px);
+  grid-gap: 5px;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.cell {
+  width: 80px;
+  height: 80px;
+  font-size: 2rem;
+  background: #fff;
+  border: 2px solid #888;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.cell:hover {
+  background: #f0f0f0;
+}
+
+.winningCell {
+  background: #ffecb3;
+}
+
+.gameOver {
+  margin-top: 1rem;
+}
+
+.gameOver p {
+  margin: 0 0 0.5rem;
+  font-weight: bold;
+}
+
+.gameOver button {
+  padding: 0.5rem 1rem;
+  font-size: 1rem;
+}
