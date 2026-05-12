@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Expense Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<style>
+body{font-family:Inter,Arial,sans-serif;background:#f5f5f5;margin:0;padding:0;}
+.container{max-width:800px;margin:auto;padding:1rem;background:white;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);min-height:100vh;display:flex;flex-direction:column;}
+header{margin-bottom:1rem;}
+h1{text-align:center;font-size:1.8rem;}
+form{display:flex;gap:0.5rem;flex-wrap:wrap;}
+form input{padding:0.5rem;border:1px solid #ccc;border-radius:4px;font-size:1rem;}
+form button{padding:0.5rem 1rem;background:#007bff;color:white;border:none;border-radius:4px;font-size:1rem;}
+form button:hover{background:#0069d9;}
+.error{color:red;font-size:0.9rem;margin-top:-0.5rem;margin-bottom:0.5rem;}
+main{flex:1;overflow:auto;}
+table{width:100%;border-collapse:collapse;margin-top:1rem;}
+th,td{text-align:left;padding:0.75rem;border-bottom:1px solid #e0e0e0;}
+tfoot{font-weight:600;}
+@media (max-width:600px){form{flex-direction:column;}form button{width:100%;}}
+</style>
+  
+  
+  <script type="application/ld+json">
+{
+  "@context": "urn:goose.ai:schema",
+  "@type": "GooseApp",
+  "name": "expense-tracker",
+  "description": "Simple expense tracker: add expenses, view list, and see total.",
+  "width": 800,
+  "height": 600,
+  "resizable": true,
+  "mcpServers": [
+    "apps"
+  ]
+}
+  </script>
+</head>
+<body>
+<div class="container">
+<header><h1>Expense Tracker</h1></header>
+<form id="expenseForm">
+<div class="error" id="errorMsg"></div>
+<input type="text" id="name" placeholder="Expense Name" required>
+<input type="date" id="date" required>
+<input type="number" id="amount" placeholder="Amount" step="0.01" min="0" required>
+<button type="submit">Add</button>
+</form>
+<main>
+<table id="expenseTable">
+<thead><tr><th>Name</th><th>Date</th><th>Amount</th></tr></thead>
+<tbody></tbody>
+<tfoot><tr><td colspan="2">Total</td><td id="total">$0.00</td></tr></tfoot>
+</table>
+</main>
+</div>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+const form = document.getElementById('expenseForm');
+const nameInput = document.getElementById('name');
+const dateInput = document.getElementById('date');
+const amountInput = document.getElementById('amount');
+const tbody = document.querySelector('#expenseTable tbody');
+const totalCell = document.getElementById('total');
+const errorMsg = document.getElementById('errorMsg');
+let expenses = [];
+function formatCurrency(value){return '$' + Number(value).toFixed(2);}
+function updateTotal(){const total = expenses.reduce((sum, exp)=> sum + exp.amount, 0);totalCell.textContent = formatCurrency(total);}
+function addRow(exp){const tr = document.createElement('tr');tr.innerHTML = `<td>${exp.name}</td><td>${exp.date}</td><td>${formatCurrency(exp.amount)}</td>`;tbody.appendChild(tr);}
+form.addEventListener('submit', e=>{e.preventDefault();errorMsg.textContent='';const name = nameInput.value.trim();const date = dateInput.value;const amount = parseFloat(amountInput.value);if(!name || !date || isNaN(amount) || amount<0){errorMsg.textContent='Please provide valid expense details.';return;}const exp = {name, date, amount};expenses.push(exp);addRow(exp);updateTotal();form.reset();});});
+</script>
+</body>
+</html>
